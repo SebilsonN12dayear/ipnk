@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - IPNK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #052d4e;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .icon-news { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .icon-events { background: linear-gradient(45deg, #f093fb, #f5576c); }
+        .icon-hero { background: linear-gradient(45deg, #4facfe, #00f2fe); }
+        .icon-stats { background: linear-gradient(45deg, #43e97b, #38f9d7); }
+        .icon-about { background: linear-gradient(45deg, #fa709a, #fee140); }
+        .icon-contact { background: linear-gradient(45deg, #a8edea, #fed6e3); }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #052d4e;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #052d4e;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .preview-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .preview-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #052d4e;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px dashed #e1e8ed;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: #f0f8ff;
+        }
+
+        .current-content {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .current-label {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html"><h1>🎓 Painel de Administração</h1></a>
+            <p>Instituto Politécnico Do Ngola Kiluanje - Atualize o conteúdo do site facilmente</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Seção Hero (Banner Principal) -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-hero">🏠</div>
+                    <h3 class="card-title">Banner Principal</h3>
+                </div>
+                
+                <div class="current-content">
+                    <div class="current-label">Conteúdo atual:</div>
+                    <div id="current-hero-title">Nós prometemos trazer a melhor solução para o teu futuro!</div>
+                    <div id="current-hero-subtitle">Bem-vindo ao Instituto Politécnico Do Ngola Kiluanje!</div>
+                </div>
+
+                <form id="hero-form">
+                    <div class="form-group">
+                        <label>Título Principal</label>
+                        <input type="text" id="hero-title" placeholder="Digite o novo título...">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtítulo</label>
+                        <input type="text" id="hero-subtitle" placeholder="Digite o novo subtítulo...">
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem do Banner</label>
+                        <div class="file-upload">
+                            <input type="file" id="hero-image" accept="image/*">
+                            <label for="hero-image" class="file-upload-label">
+                                📷 Clique para escolher uma nova imagem
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="updateHero()">Atualizar Banner</button>
+                    <div class="success-message" id="hero-success">Banner atualizado com sucesso!</div>
+                </form>
+            </div>
+
+            <!-- Notícias e Atualizações -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-news">📰</div>
+                    <h3 class="card-title">Notícias</h3>
+                </div>
+                
+                <form id="news-form">
+                    <div class="form-group">
+                        <label>Título da Notícia</label>
+                        <input type="text" id="news-title" placeholder="Ex: Nova turma de Informática...">
+                    </div>
+                    <div class="form-group">
+                        <label>Conteúdo</label>
+                        <textarea id="news-content" placeholder="Escreva o conteúdo da notícia aqui..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="news-date">
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem da Notícia</label>
+                        <div class="file-upload">
+                            <input type="file" id="news-image" accept="image/*">
+                            <label for="news-image" class="file-upload-label">
+                                📷 Adicionar imagem à notícia
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="addNews()">Publicar Notícia</button>
+                    <div class="success-message" id="news-success">Notícia publicada com sucesso!</div>
+                </form>
+            </div>
+
+            <!-- Eventos -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-events">📅</div>
+                    <h3 class="card-title">Eventos</h3>
+                </div>
+                
+                <form id="event-form">
+                    <div class="form-group">
+                        <label>Nome do Evento</label>
+                        <input type="text" id="event-title" placeholder="Ex: Feira de Ciência e Tecnologia...">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="event-description" placeholder="Descreva o evento..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data do Evento</label>
+                        <input type="datetime-local" id="event-date">
+                    </div>
+                    <div class="form-group">
+                        <label>Local</label>
+                        <input type="text" id="event-location" placeholder="Ex: Auditório Principal...">
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem do Evento</label>
+                        <div class="file-upload">
+                            <input type="file" id="event-image" accept="image/*">
+                            <label for="event-image" class="file-upload-label">
+                                📷 Adicionar imagem do evento
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="addEvent()">Criar Evento</button>
+                    <div class="success-message" id="event-success">Evento criado com sucesso!</div>
+                </form>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-stats">📊</div>
+                    <h3 class="card-title">Estatísticas</h3>
+                </div>
+                
+                <div class="current-content">
+                    <div class="current-label">Números atuais:</div>
+                    <div>👥 Estudantes: <span id="current-students">1500</span></div>
+                    <div>👨‍🏫 Professores: <span id="current-teachers">85</span></div>
+                    <div>📚 Cursos: <span id="current-courses">4</span></div>
+                    <div>🏆 Anos: <span id="current-years">25</span></div>
+                </div>
+
+                <form id="stats-form">
+                    <div class="form-group">
+                        <label>Número de Estudantes</label>
+                        <input type="number" id="stats-students" placeholder="1500">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Professores</label>
+                        <input type="number" id="stats-teachers" placeholder="85">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Cursos</label>
+                        <input type="number" id="stats-courses" placeholder="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Anos de Experiência</label>
+                        <input type="number" id="stats-years" placeholder="25">
+                    </div>
+                    <button type="button" class="btn" onclick="updateStats()">Atualizar Estatísticas</button>
+                    <div class="success-message" id="stats-success">Estatísticas atualizadas!</div>
+                </form>
+            </div>
+
+            <!-- Sobre a Escola -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-about">🏫</div>
+                    <h3 class="card-title">Sobre a Escola</h3>
+                </div>
+                
+                <div class="current-content">
+                    <div class="current-label">Texto atual:</div>
+                    <div id="current-about">O Instituto Politécnico Do Ngola Kiluanje é uma instituição de referência na formação técnica...</div>
+                </div>
+
+                <form id="about-form">
+                    <div class="form-group">
+                        <label>Primeiro Parágrafo</label>
+                        <textarea id="about-paragraph1" placeholder="Descreva a escola no primeiro parágrafo..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Segundo Parágrafo</label>
+                        <textarea id="about-paragraph2" placeholder="Continue a descrição no segundo parágrafo..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Nova Imagem da Escola</label>
+                        <div class="file-upload">
+                            <input type="file" id="about-image" accept="image/*">
+                            <label for="about-image" class="file-upload-label">
+                                📷 Trocar imagem da seção "Sobre"
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="updateAbout()">Atualizar Informações</button>
+                    <div class="success-message" id="about-success">Informações atualizadas!</div>
+                </form>
+            </div>
+
+            <!-- Informações de Contato -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-icon icon-contact">📞</div>
+                    <h3 class="card-title">Contatos</h3>
+                </div>
+                
+                <div class="current-content">
+                    <div class="current-label">Contato atual:</div>
+                    <div id="current-phone">934-020-340</div>
+                </div>
+
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label>Telefone Principal</label>
+                        <input type="tel" id="contact-phone" placeholder="934-020-340">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="contact-email" placeholder="contato@ipnk.ao">
+                    </div>
+                    <div class="form-group">
+                        <label>Facebook</label>
+                        <input type="url" id="contact-facebook" placeholder="https://facebook.com/ipnk">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram</label>
+                        <input type="url" id="contact-instagram" placeholder="https://instagram.com/ipnk">
+                    </div>
+                    <button type="button" class="btn" onclick="updateContact()">Atualizar Contatos</button>
+                    <div class="success-message" id="contact-success">Contatos atualizados!</div>
+                </form>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px;">
+            <button onclick="generateSite()" style="background: linear-gradient(45deg, #43e97b, #38f9d7); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);">
+                🚀 Gerar Site Atualizado
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dados do site armazenados na memória
+        let siteData = {
+            hero: {
+                title: "Nós prometemos trazer a melhor solução para o teu futuro!",
+                subtitle: "Bem-vindo ao Instituto Politécnico Do Ngola Kiluanje!",
+                image: "img/ETQO0968.JPG"
+            },
+            stats: {
+                students: 1500,
+                teachers: 85,
+                courses: 4,
+                years: 25
+            },
+            about: {
+                paragraph1: "O Instituto Politécnico Do Ngola Kiluanje é uma instituição de referência na formação técnica e profissional em Angola, comprometida com a excelência educacional e o desenvolvimento do país.",
+                paragraph2: "Com uma abordagem moderna e inovadora, preparamos nossos estudantes para enfrentar os desafios do mercado de trabalho, oferecendo conhecimentos teóricos e práticos de alta qualidade.",
+                image: "img/IMG_2693.JPG"
+            },
+            contact: {
+                phone: "934-020-340",
+                email: "contato@ipnk.ao",
+                facebook: "",
+                instagram: ""
+            },
+            news: [],
+            events: []
+        };
+
+        function updateHero() {
+            const title = document.getElementById('hero-title').value;
+            const subtitle = document.getElementById('hero-subtitle').value;
+            
+            if (title) siteData.hero.title = title;
+            if (subtitle) siteData.hero.subtitle = subtitle;
+            
+            // Atualizar preview
+            document.getElementById('current-hero-title').textContent = siteData.hero.title;
+            document.getElementById('current-hero-subtitle').textContent = siteData.hero.subtitle;
+            
+            showSuccess('hero-success');
+            document.getElementById('hero-form').reset();
+        }
+
+        function addNews() {
+            const title = document.getElementById('news-title').value;
+            const content = document.getElementById('news-content').value;
+            const date = document.getElementById('news-date').value;
+            
+            if (title && content && date) {
+                siteData.news.push({
+                    title,
+                    content,
+                    date,
+                    id: Date.now()
+                });
+                
+                showSuccess('news-success');
+                document.getElementById('news-form').reset();
+            } else {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        }
+
+        function addEvent() {
+            const title = document.getElementById('event-title').value;
+            const description = document.getElementById('event-description').value;
+            const date = document.getElementById('event-date').value;
+            const location = document.getElementById('event-location').value;
+            
+            if (title && description && date && location) {
+                siteData.events.push({
+                    title,
+                    description,
+                    date,
+                    location,
+                    id: Date.now()
+                });
+                
+                showSuccess('event-success');
+                document.getElementById('event-form').reset();
+            } else {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        }
+
+        function updateStats() {
+            const students = document.getElementById('stats-students').value;
+            const teachers = document.getElementById('stats-teachers').value;
+            const courses = document.getElementById('stats-courses').value;
+            const years = document.getElementById('stats-years').value;
+            
+            if (students) {
+                siteData.stats.students = parseInt(students);
+                document.getElementById('current-students').textContent = students;
+            }
+            if (teachers) {
+                siteData.stats.teachers = parseInt(teachers);
+                document.getElementById('current-teachers').textContent = teachers;
+            }
+            if (courses) {
+                siteData.stats.courses = parseInt(courses);
+                document.getElementById('current-courses').textContent = courses;
+            }
+            if (years) {
+                siteData.stats.years = parseInt(years);
+                document.getElementById('current-years').textContent = years;
+            }
+            
+            showSuccess('stats-success');
+            document.getElementById('stats-form').reset();
+        }
+
+        function updateAbout() {
+            const paragraph1 = document.getElementById('about-paragraph1').value;
+            const paragraph2 = document.getElementById('about-paragraph2').value;
+            
+            if (paragraph1) siteData.about.paragraph1 = paragraph1;
+            if (paragraph2) siteData.about.paragraph2 = paragraph2;
+            
+            // Atualizar preview
+            const currentText = paragraph1 || siteData.about.paragraph1;
+            document.getElementById('current-about').textContent = currentText.substring(0, 100) + '...';
+            
+            showSuccess('about-success');
+            document.getElementById('about-form').reset();
+        }
+
+        function updateContact() {
+            const phone = document.getElementById('contact-phone').value;
+            const email = document.getElementById('contact-email').value;
+            const facebook = document.getElementById('contact-facebook').value;
+            const instagram = document.getElementById('contact-instagram').value;
+            
+            if (phone) {
+                siteData.contact.phone = phone;
+                document.getElementById('current-phone').textContent = phone;
+            }
+            if (email) siteData.contact.email = email;
+            if (facebook) siteData.contact.facebook = facebook;
+            if (instagram) siteData.contact.instagram = instagram;
+            
+            showSuccess('contact-success');
+            document.getElementById('contact-form').reset();
+        }
+
+        function showSuccess(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 3000);
+        }
+
+        function generateSite() {
+            // Simular geração do site
+            alert('🎉 Site atualizado com sucesso!\n\nTodas as alterações foram aplicadas:\n' +
+                  '✅ Banner: ' + siteData.hero.title + '\n' +
+                  '✅ Estatísticas atualizadas\n' +
+                  '✅ ' + siteData.news.length + ' notícias adicionadas\n' +
+                  '✅ ' + siteData.events.length + ' eventos criados\n' +
+                  '✅ Informações de contato atualizadas\n\n' +
+                  'O site está pronto para ser visualizado!');
+            
+            console.log('Dados do site atualizados:', siteData);
+
+           
+           
+           
+           
+           
+           
+            localStorage.setItem('siteData', JSON.stringify(siteData));
+
+        }
+
+        // Definir data atual por padrão
+        document.getElementById('news-date').valueAsDate = new Date();
+    </script>
+
+
+
+
+
+</body>
+</html>

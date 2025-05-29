@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPNK</title>
+    <link rel="shortcut icon" href="assets/images/IPNK.jpg" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1c73eb 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /*background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');*/
+            background-image: url(assets/images/VYCR7512.JPG);
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-20px) translateY(-10px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInRight 1s ease-out 0.6s both;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .tech-card:nth-child(2) { animation-delay: -1s; }
+        .tech-card:nth-child(3) { animation-delay: -2s; }
+        .tech-card:nth-child(4) { animation-delay: -0.5s; }
+        .tech-card:nth-child(5) { animation-delay: -1.5s; }
+        .tech-card:nth-child(6) { animation-delay: -2.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            color: #fff8e1;
+        }
+
+        
+
+        .curriculum-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .curriculum-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .curriculum-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .career-section {
+            color: white;
+            font-weight: 600;
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #003366 0%, #1e293b 50%, #1c73eb 100%);
+        }
+
+        .career-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .career-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .career-item:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1c73eb 100%);
+
+        }
+
+        .stats-section {
+            background: #f8fafc;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #3b82f6;
+            display: block;
+        }
+
+        .contact-section {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .contact-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <a href="index.html"><h1>Gestão de Sistemas Informáticos</h1></a>
+                    <p>Forme-se na área mais procurada do mercado tecnológico. Desenvolva competências em administração de sistemas, redes, segurança e gestão de infraestruturas IT.</p>
+                    <a href="#career-section" class="cta-button">Saber mais</a>
+                </div>
+                <div class="hero-visual">
+                    <div class="tech-grid">
+                        <div class="tech-card">
+                            <div class="tech-icon">🖥️</div>
+                            <div>Sistemas</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-icon">🌐</div>
+                            <div>Redes</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-icon">🔒</div>
+                            <div>Segurança</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-icon">☁️</div>
+                            <div>Cloud</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-icon">📊</div>
+                            <div>Dados</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-icon">⚙️</div>
+                            <div>DevOps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Características do Curso -->
+    
+
+    <!-- Currículo -->
+    
+
+    <!-- Saídas Profissionais -->
+    <section class="section career-section" id="career-section">
+        <div class="container">
+            <h2 class="section-title">Saídas Profissionais</h2>
+            <div class="career-grid">
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💼</div>
+                    <h4>Administrador de Sistemas</h4>
+                    <p>Gestão e manutenção de servidores e infraestruturas IT</p>
+                </div>
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                    <h4>Especialista em Segurança</h4>
+                    <p>Proteção de sistemas e dados contra ameaças cibernéticas</p>
+                </div>
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">☁️</div>
+                    <h4>Arquiteto Cloud</h4>
+                    <p>Design e implementação de soluções em nuvem</p>
+                </div>
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔧</div>
+                    <h4>Engenheiro DevOps</h4>
+                    <p>Automação e otimização de processos de desenvolvimento</p>
+                </div>
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                    <h4>Gestor de TI</h4>
+                    <p>Liderança de equipas e projetos tecnológicos</p>
+                </div>
+                <div class="career-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h4>Consultor IT</h4>
+                    <p>Assessoria especializada em soluções tecnológicas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!--<section class="section curriculum-section">
+        <div class="container">
+            <h2 class="section-title">Plano Curricular</h2>
+            <div class="curriculum-grid">
+                <div class="curriculum-item">
+                    <h4>1º Ano</h4>
+                    <ul>
+                        <li>Fundamentos de Informática</li>
+                        <li>Sistemas Operativos</li>
+                        <li>Redes de Computadores</li>
+                        <li>Programação</li>
+                        <li>Matemática Aplicada</li>
+                    </ul>
+                </div>
+                <div class="curriculum-item">
+                    <h4>2º Ano</h4>
+                    <ul>
+                        <li>Administração de Sistemas</li>
+                        <li>Segurança Informática</li>
+                        <li>Bases de Dados</li>
+                        <li>Gestão de Projetos</li>
+                        <li>Arquitetura de Sistemas</li>
+                    </ul>
+                </div>
+                <div class="curriculum-item">
+                    <h4>3º Ano</h4>
+                    <ul>
+                        <li>Cloud Computing</li>
+                        <li>DevOps e Automação</li>
+                        <li>Auditoria de Sistemas</li>
+                        <li>Gestão de Serviços IT</li>
+                        <li>Projeto Final</li>
+                    </ul>
+                </div>
+                <div class="curriculum-item">
+                    <h4>Especialização</h4>
+                    <ul>
+                        <li>Virtualização</li>
+                        <li>Cibersegurança Avançada</li>
+                        <li>Big Data</li>
+                        <li>Internet das Coisas</li>
+                        <li>Inteligência Artificial</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>-->
+
+   
+
+    <!-- Contacto 
+    <section id="contacto" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">Candidatar-me ao Curso</h2>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" name="telefone" required>
+                </div>
+                <div class="form-group">
+                    <label for="escolaridade">Escolaridade</label>
+                    <select id="escolaridade" name="escolaridade" style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;" required>
+                        <option value="">Selecione...</option>
+                        <option value="12ano">12º Ano</option>
+                        <option value="cet">CET</option>
+                        <option value="licenciatura">Licenciatura</option>
+                        <option value="mestrado">Mestrado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="motivacao">Motivação para o Curso</label>
+                    <textarea id="motivacao" name="motivacao" rows="4" placeholder="Conte-nos porque quer fazer este curso..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Candidatura</button>
+            </form>
+        </div>
+    </section>-->
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Candidatura enviada com sucesso! Entraremos em contacto em breve.');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 2s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .curriculum-item, .career-item, .stat-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

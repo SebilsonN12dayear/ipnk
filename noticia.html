@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias - Colégio Horizonte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            line-height: 1.6;
+            background: linear-gradient(180deg, #ffc0cb, #003366);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #fff8e1 0, #ca818c 100%,#fff8e1 45%);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #2a2a2a;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        .nav-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .news-card {
+            background: linear-gradient(180deg, #ffc0cb, #003366);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 250px;
+             background: linear-gradient(180deg, #fff8e1 , #ffc0cb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .news-card:hover .news-image::before {
+            left: 100%;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: #e74c3c;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .news-category.academic { background: #3498db; }
+        .news-category.sports { background: #e67e22; }
+        .news-category.events { background: #9b59b6; }
+        .news-category.achievements { background: #27ae60; }
+
+        .news-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            color: #fff8e1;
+            
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 1rem;
+        }
+
+        .read-more {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #2980b9;
+        }
+
+        .featured-news {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 300px;
+        }
+
+        .featured-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-image {
+            background: linear-gradient(180deg, #fff8e1 , #ffc0cb 100%);
+            display: flex;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .upcoming-events {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .events-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .event-item {
+            padding: 1rem;
+            border-left: 4px solid #3498db;
+            margin-bottom: 1rem;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateX(5px);
+        }
+
+        .event-date {
+            font-weight: 700;
+            color: #3498db;
+            font-size: 0.9rem;
+        }
+
+        .event-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0.3rem 0;
+        }
+
+        .event-description {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            
+            h1 { font-size: 2rem; }
+            
+            .featured-news {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upcoming-events{
+                width: 100%;
+            }
+            
+            .nav-filters {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .scroll-top.visible {
+            opacity: 19;
+        }
+
+        .scroll-top:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html"><h1><img src="assets/images/IPNK.jpg" alt="" style="width: 15%; mix-blend-mode: darken; margin-bottom:  -10px;"> Instituto Politécnico Do Ngola Kiluanje</h1></a>
+            <p class="subtitle">Portal de Notícias e Informações</p>
+        </header>
+
+        <div class="nav-filters">
+            <button class="filter-btn active" data-category="all">Todas</button>
+            <button class="filter-btn" data-category="academic">Acadêmico</button>
+            <button class="filter-btn" data-category="sports">Esportes</button>
+            <button class="filter-btn" data-category="events">Eventos</button>
+            <button class="filter-btn" data-category="achievements">Conquistas</button>
+        </div>
+
+        <div class="news-grid">
+            <article class="news-card featured-news" data-category="academic">
+                <div class="featured-content">
+                    <span class="news-category academic">Acadêmico</span>
+                    <h2 class="news-title">Novo Laboratório de Ciências Inaugurado</h2>
+                    <p class="news-excerpt">O IPNK inaugura seu mais moderno laboratório de ciências, equipado com tecnologia de ponta para proporcionar experiências práticas inovadoras aos estudantes do ensino médio.</p>
+                    <div class="news-meta">
+                        <span>📅 25 de Maio, 2025</span>
+                    </div>
+                </div>
+                <div class="featured-image"><img src="assets/images/news3.jpg" alt=""></div>
+            </article>
+
+            <article class="news-card" data-category="sports">
+                <div class="news-image">⚽</div>
+                <div class="news-content">
+                    <span class="news-category sports">Esportes</span>
+                    <h3 class="news-title">Time de Futebol Conquista Campeonato Regional</h3>
+                    <p class="news-excerpt">Nossos atletas demonstraram excelência em campo e trouxeram mais um título para nossa escola. Parabéns a toda equipe!</p>
+                    <div class="news-meta">
+                        <span>📅 20 de Maio, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card" data-category="events">
+                <div class="news-image">🎭</div>
+                <div class="news-content">
+                    <span class="news-category events">Eventos</span>
+                    <h3 class="news-title">Festival de Artes 2025</h3>
+                    <p class="news-excerpt">Prepare-se para uma semana repleta de apresentações musicais, peças teatrais e exposições artísticas criadas por nossos talentosos alunos.</p>
+                    <div class="news-meta">
+                        <span>📅 18 de Maio, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card" data-category="achievements">
+                <!--<div class="news-image">🏆</div>-->
+                <div class="news-image"><img src="assets/images/ETQO0968.JPG" alt=""></div>
+                <div class="news-content">
+                    <span class="news-category achievements">Conquistas</span>
+                    <h3 class="news-title">Alunos se Destacam na Olimpíada de Matemática</h3>
+                    <p class="news-excerpt">Cinco estudantes do Colégio Horizonte foram premiados na Olimpíada Brasileira de Matemática, demonstrando excelência acadêmica.</p>
+                    <div class="news-meta">
+                        <span>📅 15 de Maio, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card" data-category="academic">
+                <div class="news-image"><img src="assets/images/SJCK3051.JPG" alt=""></div>
+                <div class="news-content">
+                    <span class="news-category academic">Acadêmico</span>
+                    <h3 class="news-title">Curso de Programação para Estudantes</h3>
+                    <p class="news-excerpt">Nova disciplina optativa de programação e robótica está disponível para alunos do ensino médio, preparando-os para o futuro digital.</p>
+                    <div class="news-meta">
+                        <span>📅 12 de Maio, 2025</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="news-card" data-category="events">
+                <div class="news-image">🌱</div>
+                <div class="news-content">
+                    <span class="news-category events">Eventos</span>
+                    <h3 class="news-title">Projeto Sustentabilidade em Ação</h3>
+                    <p class="news-excerpt">Estudantes desenvolvem horta escolar e campanhas de conscientização ambiental, promovendo práticas sustentáveis na comunidade.</p>
+                    <div class="news-meta">
+                        <span>📅 10 de Maio, 2025</span>
+                        <!--<a href="#" class="read-more">Leia mais →</a>-->
+                    </div>
+                </div>
+            </article>
+
+
+
+             <div class="upcoming-events">
+            <h2 class="events-title">📅 Próximos Eventos</h2>
+            <div class="event-item">
+                <div class="event-date">30 de Maio</div>
+                <div class="event-title">Reunião de Pais e Mestres</div>
+                <div class="event-description">Discussão sobre o progresso acadêmico dos alunos do 2º bimestre</div>
+            </div>
+            <div class="event-item">
+                <div class="event-date">5 de Junho</div>
+                <div class="event-title">Feira de Ciências</div>
+                <div class="event-description">Apresentação dos projetos científicos desenvolvidos pelos estudantes</div>
+            </div>
+            <div class="event-item">
+                <div class="event-date">12 de Junho</div>
+                <div class="event-title">Formatura do Ensino Médio</div>
+                <div class="event-description">Cerimônia de formatura da turma de 2025</div>
+            </div>
+            <div class="event-item">
+                <div class="event-date">20 de Junho</div>
+                <div class="event-title">Início das Férias de Inverno</div>
+                <div class="event-description">Período de recesso escolar até 5 de agosto</div>
+            </div>
+        </div>
+    </div>
+        </div>
+
+       
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // Filtros de categoria
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const newsCards = document.querySelectorAll('.news-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const category = button.getAttribute('data-category');
+                
+                newsCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.6s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Botão scroll to top
+        const scrollTopButton = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopButton.classList.add('visible');
+            } else {
+                scrollTopButton.classList.remove('visible');
+            }
+        });
+
+        scrollTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animação de hover nos cards
+        newsCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Efeito de fade in ao carregar
+        window.addEventListener('load', () => {
+            newsCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
